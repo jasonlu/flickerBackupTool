@@ -12,13 +12,13 @@
 		F0759403182623AF00D1CA9D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F0759402182623AF00D1CA9D /* main.m */; };
 		F0759407182623AF00D1CA9D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F0759405182623AF00D1CA9D /* Credits.rtf */; };
 		F075940A182623AF00D1CA9D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0759409182623AF00D1CA9D /* AppDelegate.m */; };
-		F075940D182623AF00D1CA9D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F075940B182623AF00D1CA9D /* MainMenu.xib */; };
 		F0759410182623AF00D1CA9D /* flickerBackupTool.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F075940E182623AF00D1CA9D /* flickerBackupTool.xcdatamodeld */; };
 		F0759412182623AF00D1CA9D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0759411182623AF00D1CA9D /* Images.xcassets */; };
 		F0759419182623AF00D1CA9D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0759418182623AF00D1CA9D /* XCTest.framework */; };
 		F075941A182623AF00D1CA9D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F07593F6182623AF00D1CA9D /* Cocoa.framework */; };
 		F0759422182623AF00D1CA9D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0759420182623AF00D1CA9D /* InfoPlist.strings */; };
 		F0759424182623AF00D1CA9D /* flickerBackupToolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0759423182623AF00D1CA9D /* flickerBackupToolTests.m */; };
+		F075942F182624D400D1CA9D /* FlickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F075942E182624D400D1CA9D /* FlickerController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +52,8 @@
 		F075941F182623AF00D1CA9D /* flickerBackupToolTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "flickerBackupToolTests-Info.plist"; sourceTree = "<group>"; };
 		F0759421182623AF00D1CA9D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F0759423182623AF00D1CA9D /* flickerBackupToolTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = flickerBackupToolTests.m; sourceTree = "<group>"; };
+		F075942D182624D400D1CA9D /* FlickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickerController.h; sourceTree = "<group>"; };
+		F075942E182624D400D1CA9D /* FlickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickerController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,8 @@
 			isa = PBXGroup;
 			children = (
 				F0759408182623AF00D1CA9D /* AppDelegate.h */,
+				F075942D182624D400D1CA9D /* FlickerController.h */,
+				F075942E182624D400D1CA9D /* FlickerController.m */,
 				F0759409182623AF00D1CA9D /* AppDelegate.m */,
 				F075940B182623AF00D1CA9D /* MainMenu.xib */,
 				F0759411182623AF00D1CA9D /* Images.xcassets */,
@@ -236,7 +240,6 @@
 				F0759401182623AF00D1CA9D /* InfoPlist.strings in Resources */,
 				F0759412182623AF00D1CA9D /* Images.xcassets in Resources */,
 				F0759407182623AF00D1CA9D /* Credits.rtf in Resources */,
-				F075940D182623AF00D1CA9D /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +260,7 @@
 			files = (
 				F075940A182623AF00D1CA9D /* AppDelegate.m in Sources */,
 				F0759410182623AF00D1CA9D /* flickerBackupTool.xcdatamodeld in Sources */,
+				F075942F182624D400D1CA9D /* FlickerController.m in Sources */,
 				F0759403182623AF00D1CA9D /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
