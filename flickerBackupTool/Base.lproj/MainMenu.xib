@@ -662,6 +662,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="testLoginAction:" target="8bI-WM-XyY" id="30b-b5-YNP"/>
+                        </connections>
                     </button>
                 </subviews>
             </view>
@@ -672,5 +675,7 @@
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
+        <objectController id="kGV-LI-hYd"/>
+        <customObject id="8bI-WM-XyY" customClass="FlickerController"/>
     </objects>
 </document>

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "FlickerController.h"
 
 @implementation AppDelegate
 
@@ -17,6 +18,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
+    FlickerController *controller = [[FlickerController alloc] init];
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "biz.jasonl.flickerBackupTool" in the user's Application Support directory.
