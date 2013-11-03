@@ -1,6 +1,3 @@
-[submodule "FlickrKit"]
-	path = FlickrKit
-	url = git@github.com:devedup/FlickrKit.git
 [submodule "objectiveflickr"]
 	path = objectiveflickr
 	url = git@github.com:lukhnos/objectiveflickr.git
