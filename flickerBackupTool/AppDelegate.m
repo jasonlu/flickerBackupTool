@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "FlickerController.h"
+
 
 @implementation AppDelegate
 
@@ -15,10 +15,24 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
 
+
+- (id)init
+{
+    self = [super init];
+    //[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(urlComming:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
+    if (self){
+        [[NSUserDefaults standardUserDefaults] setFloat:100 forKey:@"fontSize"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isBold"];
+    }
+    return self;
+}
+
+
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
-    FlickerController *controller = [[FlickerController alloc] init];
+    // set the delegate, here we assume it's the controller that's creating the request object
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "biz.jasonl.flickerBackupTool" in the user's Application Support directory.

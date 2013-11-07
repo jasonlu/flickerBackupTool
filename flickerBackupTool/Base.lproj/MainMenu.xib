@@ -25,7 +25,11 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
+                            <menuItem title="Preferences…" keyEquivalent="," id="129">
+                                <connections>
+                                    <action selector="showPreferences:" target="7dh-es-Nri" id="iOB-YV-U9j"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -649,21 +653,49 @@
         <window title="flickerBackupTool" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+            <rect key="contentRect" x="335" y="390" width="568" height="407"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="568" height="407"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CRh-SE-Zbh">
-                        <rect key="frame" x="162" y="23" width="141" height="54"/>
+                    <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="allowed" verticalScrollElasticity="allowed" translatesAutoresizingMaskIntoConstraints="NO" id="DIS-gl-jVp">
+                        <rect key="frame" x="105" y="25" width="420" height="362"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="squareTextured" title="Connect to Flickr" bezelStyle="texturedSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PKT-Hb-5nw">
+                        <clipView key="contentView" ambiguous="YES" misplaced="YES" id="65S-o9-qYd">
+                            <rect key="frame" x="0.0" y="0.0" width="420" height="362"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <collectionView ambiguous="YES" id="A2g-rS-D6v">
+                                    <rect key="frame" x="0.0" y="0.0" width="420" height="362"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <connections>
+                                        <binding destination="thV-7P-obM" name="content" keyPath="arrangedObjects" id="xiJ-qo-NEd"/>
+                                        <binding destination="thV-7P-obM" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="xiJ-qo-NEd" id="rP0-ce-K4e"/>
+                                        <outlet property="itemPrototype" destination="wao-et-GQ0" id="yHI-aq-iiq"/>
+                                    </connections>
+                                </collectionView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="qKH-hz-H8O">
+                            <rect key="frame" x="1" y="144" width="233" height="15"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="M83-gm-6p1">
+                            <rect key="frame" x="234" y="1" width="15" height="143"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oxl-Qn-5ue">
+                        <rect key="frame" x="14" y="359" width="82" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cPx-MW-yMu">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="testLoginAction:" target="8bI-WM-XyY" id="30b-b5-YNP"/>
+                            <action selector="checkAuth:" target="8bI-WM-XyY" id="wdo-bY-kR5"/>
                         </connections>
                     </button>
                 </subviews>
@@ -671,11 +703,62 @@
         </window>
         <customObject id="494" customClass="AppDelegate">
             <connections>
+                <outlet property="flickrController" destination="8bI-WM-XyY" id="7fR-c2-Zaf"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
         <objectController id="kGV-LI-hYd"/>
-        <customObject id="8bI-WM-XyY" customClass="FlickerController"/>
+        <customObject id="7dh-es-Nri" customClass="AppController"/>
+        <customObject id="8bI-WM-XyY" customClass="FlickerController">
+            <connections>
+                <outlet property="_authProgress" destination="Dyg-px-38f" id="faW-55-07W"/>
+                <outlet property="_collection" destination="A2g-rS-D6v" id="gvv-yJ-wa5"/>
+                <outlet property="_window" destination="371" id="1Yp-Iy-D4n"/>
+                <outlet property="arrayController" destination="thV-7P-obM" id="5bE-86-tNR"/>
+                <outlet property="authPromtSheet" destination="XKD-6E-IOU" id="fPm-7q-DKY"/>
+            </connections>
+        </customObject>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="XKD-6E-IOU" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="112" width="267" height="104"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <view key="contentView" id="GtC-Qn-M0a">
+                <rect key="frame" x="0.0" y="0.0" width="267" height="104"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CRh-SE-Zbh">
+                        <rect key="frame" x="63" y="18" width="141" height="54"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="squareTextured" title="Connect to Flickr" bezelStyle="texturedSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PKT-Hb-5nw">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="startAuth:" target="8bI-WM-XyY" id="v5D-Bm-aJO"/>
+                        </connections>
+                    </button>
+                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Dyg-px-38f">
+                        <rect key="frame" x="125" y="79" width="16" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </progressIndicator>
+                </subviews>
+            </view>
+        </window>
+        <collectionViewItem id="wao-et-GQ0">
+            <connections>
+                <outlet property="view" destination="Hdf-NM-aqm" id="Q7M-pa-Orv"/>
+            </connections>
+        </collectionViewItem>
+        <view id="Hdf-NM-aqm">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+            <autoresizingMask key="autoresizingMask"/>
+        </view>
+        <arrayController id="thV-7P-obM">
+            <connections>
+                <binding destination="8bI-WM-XyY" name="contentArray" keyPath="sets" id="BLc-Yt-TEn"/>
+            </connections>
+        </arrayController>
     </objects>
 </document>

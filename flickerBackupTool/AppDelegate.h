@@ -7,8 +7,16 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "FlickerController.h"
+//#import <ObjectiveFlickr/ObjectiveFlickr.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
+{
+    NSString *kCallbackURLBaseString;
+    OFFlickrAPIRequest *_flickrRequest;
+    OFFlickrAPIContext *_flickrContext;
+    IBOutlet FlickerController *flickrController;
+}
 
 @property (assign) IBOutlet NSWindow *window;
 
