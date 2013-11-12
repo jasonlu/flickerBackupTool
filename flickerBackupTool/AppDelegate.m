@@ -19,14 +19,12 @@
 - (id)init
 {
     self = [super init];
-    //[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(urlComming:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
-    if (self){
-        [[NSUserDefaults standardUserDefaults] setFloat:100 forKey:@"fontSize"];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isBold"];
-    }
     return self;
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
+    return YES;
+}
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

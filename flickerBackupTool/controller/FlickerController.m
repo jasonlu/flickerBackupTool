@@ -10,17 +10,14 @@
 
 static NSString *kCallbackURLBaseString = OBJECTIVE_FLICKR_CALLBACK_BASE;
 static NSString *kOAuthAuth = OBJECTIVE_FLICKR_AUTH_TYPE;
-static NSString *kFrobRequest = @"Frob";
-static NSString *kTryObtainAuthToken = @"TryAuth";
-static NSString *kTestLogin = @"TestLogin";
-static NSString *kUpgradeToken = @"UpgradeToken";
 
-const NSTimeInterval kTryObtainAuthTokenInterval = 3.0;
+// const NSTimeInterval kTryObtainAuthTokenInterval = 3.0;
 
 @implementation FlickerController
 
 @synthesize flickrContext = _flickrContext;
 @synthesize flickrRequest = _flickrRequest;
+@synthesize photosets = _photosets;
 
 
 - (void)handleIncomingURL:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
@@ -43,13 +40,22 @@ const NSTimeInterval kTryObtainAuthTokenInterval = 3.0;
 - (id)init
 {
     self = [super init];
-    NSLog(@"FlickerCOntroller initialized");
+    _photosets = [[NSMutableArray alloc] init];
+    //NSLog(@"FlickerController initialized");
     [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleIncomingURL:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
-    NSLog(@"url protocal registered...");
-    _flickrContext = [[OFFlickrAPIContext alloc] initWithAPIKey:OBJECTIVE_FLICKR_SAMPLE_API_KEY sharedSecret:OBJECTIVE_FLICKR_SAMPLE_API_SHARED_SECRET];
+    //NSLog(@"url protocal registered...");
+    _flickrContext = [[OFFlickrAPIContext alloc] initWithAPIKey:OBJECTIVE_FLICKR_SAMPLE_API_KEY
+                                                   sharedSecret:OBJECTIVE_FLICKR_SAMPLE_API_SHARED_SECRET];
     _flickrRequest = [[OFFlickrAPIRequest alloc] initWithAPIContext:_flickrContext];
     [_flickrRequest setDelegate:self];
-
+    //NSLog(@"Flickr request object initialzed...");
+    if([self isAuthenticated]) {
+        [self getPhotoSets];
+    }
+    [arrayController addObserver:self
+                      forKeyPath:@"selectionIndexes"
+                         options:NSKeyValueObservingOptionNew
+                         context:nil];
     return self;
 }
 
@@ -67,39 +73,93 @@ const NSTimeInterval kTryObtainAuthTokenInterval = 3.0;
 
 - (IBAction)checkAuth:(id)sender;
 {
-    if(true)
-    {
-        NSLog(@"Checkauth...");
-        NSLog(@"%@",_window);
+    if([self isAuthenticated]) {
+        [self getPhotoSets];
+    }
+}
+
+
+- (void)getPhotoSets
+{
+    if (![_flickrRequest isRunning]) {
+        FlickrSession *session = [[FlickrSession alloc] init];
+        session.complete = @selector(didReceivePhotosetList:);
+        session.delegate = self;
+        _flickrRequest.sessionInfo = session;
+		[_flickrRequest callAPIMethodWithGET:@"flickr.photosets.getList" arguments:[NSDictionary dictionaryWithObjectsAndKeys:@"100", @"per_page", @"url_m", @"primary_photo_extras", nil]];
+	}
+}
+
+- (void)getPhotosInSetId: (NSString *)photosetId {
+    // http://www.flickr.com/services/api/flickr.photosets.getPhotos.html
+    
+    //NSLog(@"photosetId: %@", photosetId);
+    if (![_flickrRequest isRunning]) {
+        FlickrSession *session = [[FlickrSession alloc] init];
+        session.complete = @selector(didReceivePhotoset:);
+        session.delegate = self;
+        _flickrRequest.sessionInfo = session;
+        NSString *perPage = [NSString stringWithFormat:@"%d", 500];
+        NSString *page = [NSString stringWithFormat:@"%d", 1];
+        NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:photosetId, @"photoset_id", perPage, @"per_page", page, @"page", @"url_o", @"extras",nil];
+		[_flickrRequest callAPIMethodWithGET:@"flickr.photosets.getPhotos" arguments: args];
+	}
+}
+
+- (void)didReceivePhotosetList:(NSArray *)params
+{
+    //NSLog(@"Selector called,");
+    //[_photosets removeAllObjects];
+
+    NSDictionary *dict = [params objectAtIndex:1];
+    NSArray *photosets = [dict valueForKeyPath:@"photosets.photoset"];
+    //NSLog(@"Sets: %@", sets);
+    
+    //NSLog(@"[before] photosets %@",  _photosets);
+    for (NSDictionary *set in photosets) {
+        //NSLog(@"set: %@", set);
+        FlickrPhotoSet *photoset = [[FlickrPhotoSet alloc] initWithPhotoSet: set];
+        // Add to array controller instead of array itself.
+        [arrayController addObject:photoset];
+    }
+    //NSLog(@"[after] photosets %@",  _photosets);
+}
+
+- (void)didReceivePhotoset:(NSArray *)params
+{
+    NSDictionary *dict = [params objectAtIndex:1];
+    NSLog(@"Response: %@", dict);
+}
+
+
+- (BOOL)isAuthenticated
+{
+    NSString *accessToken = [[NSUserDefaults standardUserDefaults] valueForKey:@"accessToken"];
+    NSString *accessSecret = [[NSUserDefaults standardUserDefaults] valueForKey:@"accessSecret"];
+    
+    if(accessToken == nil) {
         [NSApp beginSheet:authPromtSheet
            modalForWindow:(NSWindow *)_window
             modalDelegate:self
            didEndSelector:nil
               contextInfo:nil];
-    }
-    else
-    {
-        // Do nothing.
+        return false;
+    } else {
+        _flickrContext.OAuthToken = accessToken;
+        _flickrContext.OAuthTokenSecret = accessSecret;
+        return true;
     }
 }
+
 - (BOOL)auth
 {
-    _flickrRequest.sessionInfo = @"OAuth";
     NSURL *callBackUrl = [NSURL URLWithString:kCallbackURLBaseString];
     // Post something to Flickr.
     // Then wait for the callback to flickrAPIRequest:didObtainOAuthRequestToken:secret:
     [_flickrRequest fetchOAuthRequestTokenWithCallbackURL:callBackUrl];
     
-    
     NSLog(@"Start auth, CALLBACK: %@", callBackUrl);
-
     return true;
-}
-
-- (void)tryObtainAuthToken
-{
-    _flickrRequest.sessionInfo = kTryObtainAuthToken;
-    [_flickrRequest callAPIMethodWithGET:@"flickr.auth.getToken" arguments:[NSDictionary dictionaryWithObjectsAndKeys:_frob, @"frob", nil]];
 }
 
 
@@ -112,17 +172,22 @@ const NSTimeInterval kTryObtainAuthTokenInterval = 3.0;
     NSLog(@"Auth URL: %@", [authURL absoluteString]);
     [[NSWorkspace sharedWorkspace] openURL:authURL];
     NSLog(@"Browser window opened");
-    
     // Wait for the callback from browser.
-
 }
 
 - (void)flickrAPIRequest:(OFFlickrAPIRequest *)inRequest didObtainOAuthAccessToken:(NSString *)inAccessToken secret:(NSString *)inSecret userFullName:(NSString *)inFullName userName:(NSString *)inUserName userNSID:(NSString *)inNSID
 {
+    
+    [[NSUserDefaults standardUserDefaults] setValue:inAccessToken forKey:@"accessToken"];
+    [[NSUserDefaults standardUserDefaults] setValue:inSecret forKey:@"accessSecret"];
+    [[NSUserDefaults standardUserDefaults] setValue:inFullName forKey:@"fullname"];
+    [[NSUserDefaults standardUserDefaults] setValue:inUserName forKey:@"username"];
+    [[NSUserDefaults standardUserDefaults] setValue:inNSID forKey:@"NSID"];
+    
     _flickrContext.OAuthToken = inAccessToken;
     _flickrContext.OAuthTokenSecret = inSecret;
     
-    NSLog(@"Token: %@, secret: %@", inAccessToken, inSecret);
+    //NSLog(@"Token: %@, secret: %@", inAccessToken, inSecret);
     
     NSRunAlertPanel(@"Authenticated", [NSString stringWithFormat:@"OAuth access token: %@, secret: %@", inAccessToken, inSecret], @"Dismiss", nil, nil);
     [_authProgress stopAnimation:nil];
@@ -133,67 +198,23 @@ const NSTimeInterval kTryObtainAuthTokenInterval = 3.0;
 
 - (void)flickrAPIRequest:(OFFlickrAPIRequest *)inRequest didCompleteWithResponse:(NSDictionary *)inResponseDictionary
 {
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"Hi there."];
-    [alert runModal];
-
-    NSLog(@"%s, return: %@", __PRETTY_FUNCTION__, inResponseDictionary);
-    
-    
-    if (inRequest.sessionInfo == kFrobRequest) {
-        _frob = [[inResponseDictionary valueForKeyPath:@"frob._text"] copy];
-        NSLog(@"%@: %@", kFrobRequest, _frob);
-        
-        NSURL *authURL = [_flickrContext loginURLFromFrobDictionary:inResponseDictionary requestedPermission:OFFlickrWritePermission];
-        [[NSWorkspace sharedWorkspace] openURL:authURL];
-        
-        [self performSelector:@selector(tryObtainAuthToken) withObject:nil afterDelay:kTryObtainAuthTokenInterval];
-        
-    
-    }
-    else if (inRequest.sessionInfo == kTryObtainAuthToken) {
-        NSString *authToken = [inResponseDictionary valueForKeyPath:@"auth.token._text"];
-        NSLog(@"%@: %@", kTryObtainAuthToken, authToken);
-        
-        _flickrContext.authToken = authToken;
-        _flickrRequest.sessionInfo = nil;
-        
-    }
-    else if (inRequest.sessionInfo == kUpgradeToken) {
-        NSString *oat = [inResponseDictionary valueForKeyPath:@"auth.access_token.oauth_token"];
-        NSString *oats = [inResponseDictionary valueForKeyPath:@"auth.access_token.oauth_token_secret"];
-        
-        _flickrContext.authToken = nil;
-        _flickrContext.OAuthToken = oat;
-        _flickrContext.OAuthTokenSecret = oats;
-        NSRunAlertPanel(@"Auth Token Upgraded", [NSString stringWithFormat:@"New OAuth token: %@, secret: %@", oat, oats], @"Dismiss", nil, nil);
-        
-    }
-    else if (inRequest.sessionInfo == kTestLogin) {
-        _flickrRequest.sessionInfo = nil;
-        NSRunAlertPanel(@"Test OK!", @"API returns successfully", @"Dismiss", nil, nil);
-    }
+    FlickrSession *session = inRequest.sessionInfo;
+    //NSLog(@"Callback Session: %@", session);
+    NSArray *params = [NSArray arrayWithObjects:inRequest, inResponseDictionary, nil];
+    [session.delegate performSelector:session.complete
+                           withObject:params];
+    return;
 }
 
 - (void)flickrAPIRequest:(OFFlickrAPIRequest *)inRequest didFailWithError:(NSError *)inError
 {
-    NSLog(@"%s, error: %@", __PRETTY_FUNCTION__, inError);
     
-    if (inRequest.sessionInfo == kTryObtainAuthToken) {
-        [self performSelector:@selector(tryObtainAuthToken) withObject:nil afterDelay:kTryObtainAuthTokenInterval];
-    }
-    else {
-        if (inRequest.sessionInfo == kOAuthAuth || inRequest.sessionInfo == kFrobRequest || inRequest.sessionInfo == kTryObtainAuthToken) {
-                    }
-        else if (inRequest.sessionInfo == kUpgradeToken) {
-            
-        }
-        else if (inRequest.sessionInfo == kTestLogin) {
-            
-        }
-        
-        NSRunAlertPanel(@"API Error", [NSString stringWithFormat:@"An error occurred in the stage \"%@\", error: %@", inRequest.sessionInfo, inError], @"Dismiss", nil, nil);
-    }
+    FlickrSession *session = inRequest.sessionInfo;
+    NSLog(@"Callback Session: %@", session);
+    NSArray *params = [NSArray arrayWithObjects:inRequest, inError, nil];
+    [session.delegate performSelector:session.error
+                           withObject:params];
+    return;
 }
 
 @end

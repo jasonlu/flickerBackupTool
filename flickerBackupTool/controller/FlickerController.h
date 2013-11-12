@@ -12,7 +12,8 @@
 
 #import <Foundation/Foundation.h>
 #import <ObjectiveFlickr/ObjectiveFlickr.h>
-
+#import "FlickrSession.h"
+#import "FlickrPhotoSet.h"
 
 
 @interface FlickerController : NSObject <OFFlickrAPIRequestDelegate>
@@ -23,12 +24,12 @@
     IBOutlet NSProgressIndicator *_authProgress;
     IBOutlet NSCollectionView *_collection;
     IBOutlet NSArrayController *arrayController;
-    NSArray *sets;
-
 }
 // @property will help to generate getter and setter for us.
 @property (strong, nonatomic) OFFlickrAPIRequest *flickrRequest;
 @property (strong, nonatomic) OFFlickrAPIContext *flickrContext;
+
+@property (strong) NSMutableArray *photosets;
 
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

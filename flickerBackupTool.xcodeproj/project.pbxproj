@@ -27,6 +27,9 @@
 		F088990A182B241000F17A20 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0889909182B241000F17A20 /* AppController.m */; };
 		F088990D182B245200F17A20 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = F088990C182B245200F17A20 /* PreferenceController.m */; };
 		F0CD924B1826479B0038AFCE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F075940B182623AF00D1CA9D /* MainMenu.xib */; };
+		F0DEE4381831528100FC25E8 /* MyItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0DEE4371831528100FC25E8 /* MyItemController.m */; };
+		F0DEE43C1831AB8200FC25E8 /* CollectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0DEE43B1831AB8200FC25E8 /* CollectionItem.xib */; };
+		F0E67CCB182B6C210020128B /* FlickrSession.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E67CCA182B6C210020128B /* FlickrSession.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +111,11 @@
 		F088990B182B245100F17A20 /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
 		F088990C182B245200F17A20 /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; };
 		F0CD9249182646900038AFCE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F0DEE4361831528100FC25E8 /* MyItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyItemController.h; sourceTree = "<group>"; };
+		F0DEE4371831528100FC25E8 /* MyItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyItemController.m; sourceTree = "<group>"; };
+		F0DEE43B1831AB8200FC25E8 /* CollectionItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CollectionItem.xib; path = View/CollectionItem.xib; sourceTree = "<group>"; };
+		F0E67CC9182B6C210020128B /* FlickrSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrSession.h; sourceTree = "<group>"; };
+		F0E67CCA182B6C210020128B /* FlickrSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrSession.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +258,8 @@
 				F08898FC182B1C7100F17A20 /* FlickrPhotoSet.m */,
 				F08898FE182B1C7F00F17A20 /* FlickrPhoto.h */,
 				F08898FF182B1C7F00F17A20 /* FlickrPhoto.m */,
+				F0E67CC9182B6C210020128B /* FlickrSession.h */,
+				F0E67CCA182B6C210020128B /* FlickrSession.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -263,6 +273,8 @@
 				F0889909182B241000F17A20 /* AppController.m */,
 				F088990B182B245100F17A20 /* PreferenceController.h */,
 				F088990C182B245200F17A20 /* PreferenceController.m */,
+				F0DEE4361831528100FC25E8 /* MyItemController.h */,
+				F0DEE4371831528100FC25E8 /* MyItemController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -272,6 +284,7 @@
 			children = (
 				F075940B182623AF00D1CA9D /* MainMenu.xib */,
 				F0889906182B237900F17A20 /* Preferences.xib */,
+				F0DEE43B1831AB8200FC25E8 /* CollectionItem.xib */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -380,6 +393,7 @@
 			files = (
 				F0759401182623AF00D1CA9D /* InfoPlist.strings in Resources */,
 				F0759412182623AF00D1CA9D /* Images.xcassets in Resources */,
+				F0DEE43C1831AB8200FC25E8 /* CollectionItem.xib in Resources */,
 				F0CD924B1826479B0038AFCE /* MainMenu.xib in Resources */,
 				F0759407182623AF00D1CA9D /* Credits.rtf in Resources */,
 				F0889907182B237900F17A20 /* Preferences.xib in Resources */,
@@ -403,11 +417,13 @@
 			files = (
 				F075940A182623AF00D1CA9D /* AppDelegate.m in Sources */,
 				F0759410182623AF00D1CA9D /* flickerBackupTool.xcdatamodeld in Sources */,
+				F0E67CCB182B6C210020128B /* FlickrSession.m in Sources */,
 				F0889904182B1CBA00F17A20 /* FlickerController.m in Sources */,
 				F0889900182B1C7F00F17A20 /* FlickrPhoto.m in Sources */,
 				F088990D182B245200F17A20 /* PreferenceController.m in Sources */,
 				F088990A182B241000F17A20 /* AppController.m in Sources */,
 				F08898FD182B1C7100F17A20 /* FlickrPhotoSet.m in Sources */,
+				F0DEE4381831528100FC25E8 /* MyItemController.m in Sources */,
 				F0759403182623AF00D1CA9D /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

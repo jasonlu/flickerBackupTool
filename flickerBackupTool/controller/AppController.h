@@ -10,11 +10,11 @@
 #import "PreferenceController.h"
 
 @interface AppController : NSObject {
-    
+    IBOutlet NSArrayController *arrayController;
 }
 
 @property (assign) IBOutlet NSWindow *mainWindow;
-@property (retain) PreferenceController *preferenceController;
+@property (strong) PreferenceController *preferenceController;
 -(IBAction)showPreferences:(id)sender;
 
 @end

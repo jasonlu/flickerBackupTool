@@ -14,8 +14,15 @@
 
 -(IBAction)showPreferences:(id)sender{
     if(!self.preferenceController)
-        self.preferenceController = [[PreferenceController alloc] initWithWindowNibName:@"Preferences"];
-    
+        self.preferenceController = [[PreferenceController alloc] init];
+    //NSLog(@"pregerence ctrl: %@ ", self.preferenceController);
     [self.preferenceController showWindow:self];
 }
+- (id)init {
+    self = [super init];
+    //NSLog(@"app ctrl init");
+    return self;
+}
+
+
 @end
